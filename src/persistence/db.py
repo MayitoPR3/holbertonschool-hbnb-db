@@ -14,9 +14,10 @@
 
 from src.models.base import Base
 from src.persistence.repository import Repository
+from app import db, app
 
 
-class DBRepository(Repository):
+class DataManager:
     """Dummy DB repository"""
 
     def __init__(self) -> None:
@@ -32,8 +33,14 @@ class DBRepository(Repository):
     def reload(self) -> None:
         """Not implemented"""
 
-    def save(self, obj: Base) -> None:
+    def save_user(self, user):
         """Not implemented"""
+        if app.config['USE_DATABASE']:
+            db.session.add(user)
+            db.session.commit()
+        else:
+            # Implement file-based save logiv
+            pass
 
     def update(self, obj: Base) -> Base | None:
         """Not implemented"""

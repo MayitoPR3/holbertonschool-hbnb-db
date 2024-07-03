@@ -2,8 +2,11 @@
 Country related functionality
 """
 
+from app import db
 
-class Country:
+
+
+class Country(db.Model):
     """
     Country representation
 
@@ -12,8 +15,9 @@ class Country:
     This class is used to get and list countries
     """
 
-    name: str
-    code: str
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    code = db.Column(db.String(10), nullable=False)
     cities: list
 
     def __init__(self, name: str, code: str, **kw) -> None:

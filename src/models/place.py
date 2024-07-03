@@ -5,22 +5,27 @@ Place related functionality
 from src.models.base import Base
 from src.models.city import City
 from src.models.user import User
+from app import db
 
 
-class Place(Base):
+
+class Place(db.Model):
     """Place representation"""
 
-    name: str
-    description: str
-    address: str
-    latitude: float
-    longitude: float
-    host_id: str
-    city_id: str
-    price_per_night: int
-    number_of_rooms: int
-    number_of_bathrooms: int
-    max_guests: int
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(255), nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    address = db.Column(db.String(255), nullable=False)
+    latitude = db.Column(db.Float, nullable=False)
+    longitude = db.Column(db.Float, nullable=False)
+    host_id = db.Column(db.String(36), nullable=False)
+    city_id = db.Column(db.String(36), nullable=False)
+    price_per_night = db.Column(db.Integer, nullable=False)
+    number_of_rooms = db.Column(db.Integer, nullable=False)
+    number_of_bathrooms = db.Column(db.Integer, nullable=False)
+    max_guests = db.Column(db.Integer, nullable=False)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
 
     def __init__(self, data: dict | None = None, **kw) -> None:
         """Dummy init"""
