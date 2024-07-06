@@ -26,7 +26,7 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     app = Flask(__name__)
     app.url_map.strict_slashes = False
     app.config.from_object(config_class)
-    app.config['JWT_SECRET_KEY'] = 'u7CCkK-PzGhwvXlm9bYCYxfmSkCMDRkxyvaTayC3ew8'
+    app.config['JWT_SECRET_KEY'] = 'YOUR_SECRET_KEY'
 
     from app import db
     db.init_app(app)
