@@ -6,13 +6,13 @@ from src.models.user import User
 bcrypt = Bcrypt()
 
 def login():
-    username = request.json.get('username', None)
+    email = request.json.get('email', None)
     password = request.json.get('password', None)
-    user = User.query.filter_by(username=username).first()
-    additional_claims = {"is_admin": user.is_admin}
-    access_token = create_access_token(identity=user.id, additional_claims=additional_claims)
+    user = User.query.filter_by(email=email).first()
+    additional_claims = {"is_admin": user.is_admin if user else False}
+    access_token = create_access_token(identity=user.id if user else None, additional_claims=additional_claims)
     if user and bcrypt.check_password_hash(user.password, password):
-        access_token = create_access_token(identity=username)
+        access_token = create_access_token(identity=email)
         return jsonify(access_token=access_token), 200
     return 'Wrong username or password', 401
 
@@ -27,3 +27,10 @@ def admin_data():
     if not claims.get('is_admin'):
         return jsonify({"msg": "Administration rights required"}), 403
     # Proceed with admin-only functionality
+
+
+# Just for test
+def test():
+    return "Hello, world!"
+
+

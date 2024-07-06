@@ -26,6 +26,7 @@ def create_app(config_class="src.config.DevelopmentConfig") -> Flask:
     app = Flask(__name__)
     app.url_map.strict_slashes = False
     app.config.from_object(config_class)
+    app.config['JWT_SECRET_KEY'] = 'u7CCkK-PzGhwvXlm9bYCYxfmSkCMDRkxyvaTayC3ew8'
 
     from app import db
     db.init_app(app)
@@ -55,7 +56,7 @@ def register_routes(app: Flask) -> None:
     from src.routes.places import places_bp
     from src.routes.amenities import amenities_bp
     from src.routes.reviews import reviews_bp
-    from src.routes.login import login_bp
+    from src.routes.login import login_bp, protected_bp, admin_data_bp, test_bp
 
     # Register the blueprints in the app
     app.register_blueprint(users_bp)
@@ -64,7 +65,12 @@ def register_routes(app: Flask) -> None:
     app.register_blueprint(places_bp)
     app.register_blueprint(reviews_bp)
     app.register_blueprint(amenities_bp)
-    app.register_blueprint(login_bp)
+    app.register_blueprint(login_bp, url_prefix='/login')
+    app.register_blueprint(protected_bp, url_prefix='/protected')
+    app.register_blueprint(admin_data_bp, url_prefix='/admin/data')
+    
+    # Just a Test Blueprint in the app 
+    app.register_blueprint(test_bp)
 
 
 def register_handlers(app: Flask) -> None:
