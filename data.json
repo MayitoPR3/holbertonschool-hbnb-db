@@ -1,0 +1,1 @@
+{"country": [{"name": "Uruguay", "code": "UY"}], "user": [{"id": "b9a2984c-6eb6-4d67-9601-82cbc5d951d2", "email": "test@email.com", "password": "1234567", "is_admin": 1, "first_name": "Micheal", "last_name": "Rivera", "created_at": "2024-07-05T15:22:04.953323", "updated_at": "2024-07-05T15:22:04.953336"}], "amenity": [], "city": [], "review": [], "place": [], "placeamenity": []}

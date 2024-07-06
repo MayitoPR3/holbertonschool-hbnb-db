@@ -1,19 +1,24 @@
 """ Abstract base class for all models """
 
-from datetime import datetime
+from datetime import datetime, timezone
+import os
 from typing import Any, Optional
 import uuid
 from abc import ABC, abstractmethod
+from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy import Column, Integer, DateTime, String
+
+from utils.constants import REPOSITORY_ENV_VAR
 
 
-class Base(ABC):
+class Base(DeclarativeBase):
     """
     Base Interface for all models
     """
 
-    id: str
-    created_at: datetime
-    updated_at: datetime
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    created_at = Column(DateTime, default=datetime.now(timezone.utc))
+    updated_at = Column(DateTime, default=datetime.now(timezone.utc), onupdate=datetime.now(timezone.utc))
 
     def __init__(
         self,
@@ -59,6 +64,8 @@ class Base(ABC):
         it should override this method
         """
         from src.persistence import repo
+        if os.getenv(REPOSITORY_ENV_VAR) == "db":
+            return repo.get_all(cls)
 
         return repo.get_all(cls.__name__.lower())
 

@@ -7,19 +7,19 @@ from src.models.country import Country
 from app import db
 
 
-
 class City(db.Model):
     """City representation"""
 
+    __tablename__ = 'city'
+    
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
+    
     name = db.Column(db.String(255), nullable=False)
     country_code = db.Column(db.String(10),
                              db.ForeignKey('country.code'),
                              nullable=False)
-    country = db.relationship('Country',
-                              backref=db.backref('cities', lazy=True))
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
 
     def __init__(self, name: str, country_code: str, **kw) -> None:
         """Dummy init"""

@@ -9,6 +9,7 @@ from src.models.user import User
 def get_users():
     """Returns all users"""
     users: list[User] = User.get_all()
+    print(f"{users}")
 
     return [user.to_dict() for user in users]
 
@@ -16,16 +17,22 @@ def get_users():
 def create_user():
     """Creates a new user"""
     data = request.get_json()
+    print(f"This is the data passed to the user oject-----{data}")
+    
+    # if 'password' not in data:
+        # abort(400, "Missing field: password")
 
     try:
         user = User.create(data)
+        # print(f"THis is the new user created--------{user}--------------------")
+        
+        # if user is None:
+        #     abort(400, "User already exists")
     except KeyError as e:
         abort(400, f"Missing field: {e}")
     except ValueError as e:
         abort(400, str(e))
 
-    if user is None:
-        abort(400, "User already exists")
 
     return user.to_dict(), 201
 

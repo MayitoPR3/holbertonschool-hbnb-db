@@ -11,14 +11,17 @@ from app import db
 class Review(db.Model):
     """Review representation"""
 
+    __tablename__ = 'review'
+    
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
+    
     place_id = db.Column(db.String(36), nullable=False)
     user_id = db.Column(db.String(36), nullable=False)
     comment = db.Column(db.String(255), nullable=False)
     rating = db.Column(db.Float(0), nullable=False)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
-
+    
     def __init__(
         self, place_id: str, user_id: str, comment: str, rating: float, **kw
     ) -> None:

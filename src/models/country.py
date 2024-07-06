@@ -4,8 +4,6 @@ Country related functionality
 
 from app import db
 
-
-
 class Country(db.Model):
     """
     Country representation
@@ -15,10 +13,16 @@ class Country(db.Model):
     This class is used to get and list countries
     """
 
+    __tablename__ = "country"
+    
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
+    
     name = db.Column(db.String(255), nullable=False)
     code = db.Column(db.String(10), nullable=False)
-    cities: list
+    
+    cities = db.relationship('City', backref=db.backref('country'))
 
     def __init__(self, name: str, code: str, **kw) -> None:
         """Dummy init"""

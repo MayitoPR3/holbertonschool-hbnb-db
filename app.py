@@ -1,8 +1,9 @@
-from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from src.models.base import Base
 
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///development.db'
-db = SQLAlchemy(app)
+db = SQLAlchemy(model_class=Base)
+
+
+
 

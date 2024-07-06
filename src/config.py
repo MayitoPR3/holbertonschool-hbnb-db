@@ -16,7 +16,9 @@ class Config(ABC):
     Initial configuration settings
     This class should not be instantiated directly
     """
-
+   # SQLALCHEMY_DATABASE_URI = os.environ.get('DATABASE_URL', 'sqlite:///development.db')  # Use SQLite as default
+    # JWT_SECRET_KEY = 'mayo-secret' 
+    
     DEBUG = False
     TESTING = False
 
@@ -39,8 +41,7 @@ class DevelopmentConfig(Config):
     ```
     """
 
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL", "sqlite:///hbnb_dev.db")
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL", "sqlite:///hbnb_dev.db")
     DEBUG = True
 
 
@@ -76,7 +77,13 @@ class ProductionConfig(Config):
     TESTING = False
     DEBUG = False
 
-    SQLALCHEMY_DATABASE_URI = os.getenv(
-        "DATABASE_URL",
-        "postgresql://user:password@localhost/hbnb_prod"
-    )
+    SQLALCHEMY_DATABASE_URI = os.getenv("DATABASE_URL","postgresql://user:password@localhost/hbnb_prod")
+    
+
+def get_config():
+    env = os.environ.get('ENV', 'development')
+    if env == 'production':
+        return ProductionConfig()
+    elif env == 'testing':
+        return TestingConfig()
+    return DevelopmentConfig()

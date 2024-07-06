@@ -8,11 +8,15 @@ from src.models.user import User
 from app import db
 
 
-
 class Place(db.Model):
     """Place representation"""
 
+    __tablename__ = 'place'
+    
     id = db.Column(db.Integer, primary_key=True)
+    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
+    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
+    
     name = db.Column(db.String(255), nullable=False)
     description = db.Column(db.Text, nullable=False)
     address = db.Column(db.String(255), nullable=False)
@@ -24,9 +28,7 @@ class Place(db.Model):
     number_of_rooms = db.Column(db.Integer, nullable=False)
     number_of_bathrooms = db.Column(db.Integer, nullable=False)
     max_guests = db.Column(db.Integer, nullable=False)
-    created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
-    updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
-
+   
     def __init__(self, data: dict | None = None, **kw) -> None:
         """Dummy init"""
         super().__init__(**kw)

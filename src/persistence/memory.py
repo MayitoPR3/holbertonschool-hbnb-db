@@ -4,7 +4,7 @@ it only stores it in memory
 """
 
 from datetime import datetime
-from src.models.base import Base
+#from src.models.base import Base
 from src.persistence.repository import Repository
 from utils.populate import populate_db
 
@@ -47,7 +47,7 @@ class MemoryRepository(Repository):
         """Populates the database with some dummy data"""
         populate_db(self)
 
-    def save(self, obj: Base):
+    def save(self, obj):
         """Save an object"""
         cls = obj.__class__.__name__.lower()
 
@@ -57,7 +57,7 @@ class MemoryRepository(Repository):
 
         return obj
 
-    def update(self, obj: Base):
+    def update(self, obj):
         """Update an object"""
         cls = obj.__class__.__name__.lower()
 
@@ -69,7 +69,7 @@ class MemoryRepository(Repository):
 
         return None
 
-    def delete(self, obj: Base) -> bool:
+    def delete(self, obj) -> bool:
         """Delete an object"""
         cls = obj.__class__.__name__.lower()
 

@@ -14,37 +14,55 @@
 
 from src.models.base import Base
 from src.persistence.repository import Repository
-from app import db, app
+from sqlalchemy.exc import SQLAlchemyError
+from app import db
 
-
-class DataManager:
+class DBRepository(Repository):
     """Dummy DB repository"""
 
     def __init__(self) -> None:
         """Not implemented"""
-
-    def get_all(self, model_name: str) -> list:
+        self.session = db.session
+        self.reload()
+    
+    def get_all(self, model_name):
         """Not implemented"""
-        return []
+        try:
+            return self.session.query(model_name).all()
+        except SQLAlchemyError:
+            self.session.rollback()
+            return []
+        
 
-    def get(self, model_name: str, obj_id: str) -> Base | None:
+    def get(self, model_name: str, obj_id: str):
         """Not implemented"""
+        self.session.query(model_name).get(obj_id)
 
     def reload(self) -> None:
         """Not implemented"""
+        # self.session = db.session
+        db.create_all()
 
-    def save_user(self, user):
+    def save(self, obj):
         """Not implemented"""
+        self.session.add(obj)
+        self.session.commit()
+
+    def update(self, obj):
+        """Not implemented"""
+        self.session.commit()
+
+    def delete(self, obj):
+        """Not implemented"""
+        self.session.delete(obj)
+        self.session.commit()
+    
+"""class DataManager:
+    def save(self, user):
         if app.config['USE_DATABASE']:
             db.session.add(user)
             db.session.commit()
         else:
-            # Implement file-based save logiv
+             # Implement file-based save logic
             pass
-
-    def update(self, obj: Base) -> Base | None:
-        """Not implemented"""
-
-    def delete(self, obj: Base) -> bool:
-        """Not implemented"""
-        return False
+            """

@@ -3,16 +3,20 @@ Amenity related functionality
 """
 
 from src.models.base import Base
+from flask_sqlalchemy import SQLAlchemy
 from app import db
 
 
 class Amenity(db.Model):
     """Amenity representation"""
 
+    __tablename__ = 'amenity'
+    
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
     created_at = db.Column(db.DateTime, default=db.func.current_timestamp())
     updated_at = db.Column(db.DateTime, onupdate=db.func.current_timestamp())
+    
+    name = db.Column(db.String(255), nullable=False)
 
     def __init__(self, name: str, **kw) -> None:
         """Dummy init"""
